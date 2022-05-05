@@ -18,24 +18,52 @@ const template = (bandera, nombre, capital, poblacion) => {
 };
 
 
-const search=async(nombre)=>{
+
+
+// const search=async(nombre)=>{
+//     const url= 'https://restcountries.com/v3.1/name/'+nombre
+//     const res=await fetch(url);
+//     if(!res.ok){
+//         container.innerHTML=`<div class="alert alert-primary" role="alert">
+//         Not found
+//       </div>`
+//     }
+//     else{
+//         container.innerHTML=""
+//         const data=await res.json();
+//         data.forEach(element => {
+//             container.innerHTML+= template(element.flags.svg,element.name.common,element.capital,element.population)       
+//         });
+    
+//     }
+
+// }
+
+const search=(nombre)=>{
     const url= 'https://restcountries.com/v3.1/name/'+nombre
-    const res=await fetch(url);
-    if(!res.ok){
+    fetch(url).then((res)=>{
+        container.innerHTML=""
+        return res.json();})
+        .then((res)=>{res.forEach(element => {
+            container.innerHTML+= template(element.flags.svg,element.name.common,element.capital,element.population)       
+            });})
+        
+
+    .catch((error)=>{
+        console.log(error)
         container.innerHTML=`<div class="alert alert-primary" role="alert">
         Not found
       </div>`
-    }
-    else{
-        container.innerHTML=""
-        const data=await res.json();
-        data.forEach(element => {
-            container.innerHTML+= template(element.flags.svg,element.name.common,element.capital,element.population)       
-        });
-    
-    }
+    })
+
 
 }
+
+
+
+
+
+
 
 
 
@@ -45,5 +73,7 @@ button.addEventListener("click", ()=>{
 input.addEventListener("keyup", ()=>{
     search(input.value)
 })
+
+
 
 
